@@ -1,0 +1,705 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Clock Dashboard</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 26px;
+      letter-spacing: .5px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    header p {
+      opacity: 0.75;
+      font-size: 14px;
+    }
+
+    .content {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+      flex: 1;
+      width: 100%;
+    }
+
+    .block {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, .2);
+      padding: 20px;
+      border-radius: 12px;
+      backdrop-filter: blur(14px);
+      margin-bottom: 24px;
+    }
+
+    .block-title {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .time {
+      font-size: 34px;
+      font-weight: bold;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    .date {
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .world-title {
+      font-size: 15px;
+      margin-bottom: 14px;
+      opacity: .85;
+      font-weight: 500;
+    }
+
+    .clock-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 1000px) {
+      .clock-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .clock-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .clock-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .clock-card {
+      background: rgba(255, 255, 255, .18);
+      border: 1px solid rgba(255, 255, 255, .25);
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(14px);
+    }
+
+    .timezone-label {
+      font-size: 15px;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .dropdown {
+      position: relative;
+      width: 100%;
+      background: #fff;
+      color: #000;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .drop-list {
+      display: none;
+      position: absolute;
+      top: 105%;
+      left: 0;
+      width: 100%;
+      max-height: 140px;
+      overflow-y: auto;
+      background: #fff;
+      color: #000;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      z-index: 100;
+    }
+
+    .drop-list div {
+      padding: 6px 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .drop-list div:hover {
+      background: #eee;
+    }
+
+    footer {
+      text-align: center;
+      opacity: 0.75;
+      font-size: 13px;
+      padding: 16px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>World Clock Dashboard</h1>
+    <p>Real-time accurate world time with timezone selector</p>
+  </header>
+
+  <div class="content">
+
+    <div class="block">
+      <div class="block-title">Local Time (India)</div>
+      <div id="localDate" class="date"></div>
+      <div id="localTime" class="time"></div>
+    </div>
+
+    <div class="world-title">
+      View live time across multiple countries. Select any time zone below.
+    </div>
+
+    <div class="clock-grid">
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    Developed using HTML, CSS, and JavaScript — No frameworks or libraries used.
+  </footer>
+
+  <script>
+    const timezones = Intl.supportedValuesOf("timeZone");
+
+    function updateLocalTime() {
+      const now = new Date();
+      document.getElementById("localTime").textContent = now.toLocaleTimeString();
+      document.getElementById("localDate").textContent = now.toLocaleDateString();
+    }
+
+    setInterval(updateLocalTime, 1000);
+    updateLocalTime();
+
+    const defaults = [
+      "Europe/London",
+      "America/New_York",
+      "Asia/Dubai",
+      "Asia/Tokyo",
+      "Australia/Sydney"
+    ];
+
+    const cards = document.querySelectorAll(".clock-card");
+
+    cards.forEach((card, index) => {
+      const dropdown = card.querySelector(".dropdown");
+      const label = card.querySelector(".timezone-label");
+      const list = card.querySelector(".drop-list");
+      const span = dropdown.querySelector("span");
+
+      timezones.forEach(tz => {
+        const item = document.createElement("div");
+        item.textContent = tz.replace(/_/g, " ");
+        item.onclick = () => {
+          span.textContent = item.textContent;
+          dropdown.dataset.tz = tz;
+          list.style.display = "none";
+          updateWorldTimes();
+        };
+        list.appendChild(item);
+      });
+
+      const tz = defaults[index];
+      dropdown.dataset.tz = tz;
+      span.textContent = tz.replace(/_/g, " ");
+      label.textContent = tz.replace(/_/g, " ");
+
+      dropdown.addEventListener("click", e => {
+        e.stopPropagation();
+
+        document.querySelectorAll(".drop-list").forEach(otherList => {
+          if (otherList !== list) otherList.style.display = "none";
+        });
+
+        list.style.display = list.style.display === "block" ? "none" : "block";
+      });
+    });
+
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".drop-list").forEach(list => {
+        list.style.display = "none";
+      });
+    });
+
+    function updateWorldTimes() {
+      cards.forEach(card => {
+        const tz = card.querySelector(".dropdown").dataset.tz;
+        const label = card.querySelector(".timezone-label");
+        const dateEl = card.querySelector(".date");
+        const timeEl = card.querySelector(".time");
+
+        const now = new Date();
+
+        label.textContent = tz.replace(/_/g, " ");
+        dateEl.textContent = now.toLocaleDateString("en-US", { timeZone: tz });
+        timeEl.textContent = now.toLocaleTimeString("en-US", { timeZone: tz });
+      });
+    }
+
+    setInterval(updateWorldTimes, 1000);
+    updateWorldTimes();
+  </script>
+
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>World Clock Dashboard</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 26px;
+      letter-spacing: .5px;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    header p {
+      opacity: 0.75;
+      font-size: 14px;
+    }
+
+    .content {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Updated Local Time Block */
+    .local-time-block {
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, .22);
+      padding: 25px;
+      border-radius: 14px;
+      backdrop-filter: blur(16px);
+      margin-bottom: 30px;
+      min-height: 165px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+
+    .lt-title {
+      text-align: center;
+      font-size: 25px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: .3px;
+      opacity: 0.95;
+    }
+
+    .lt-time {
+      font-size: 47px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .lt-date {
+      text-align: center;
+      font-size: 20px;
+      opacity: .85;
+    }
+
+    .world-title {
+      font-size: 15px;
+      margin-bottom: 14px;
+      opacity: .85;
+      font-weight: 500;
+    }
+
+    .clock-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 1000px) {
+      .clock-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .clock-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .clock-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .clock-card {
+      background: rgba(255, 255, 255, .18);
+      border: 1px solid rgba(255, 255, 255, .25);
+      padding: 16px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(14px);
+    }
+
+    .timezone-label {
+      font-size: 15px;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .date {
+      text-align: center;
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .time {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      margin: 6px 0;
+    }
+
+    .dropdown {
+      position: relative;
+      width: 100%;
+      background: #fff;
+      color: #000;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .drop-list {
+      display: none;
+      position: absolute;
+      top: 105%;
+      left: 0;
+      width: 100%;
+      max-height: 140px;
+      overflow-y: auto;
+      background: #fff;
+      color: #000;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      z-index: 100;
+    }
+
+    .drop-list div {
+      padding: 6px 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .drop-list div:hover {
+      background: #eee;
+    }
+
+    footer {
+      text-align: center;
+      opacity: 0.75;
+      font-size: 13px;
+      padding: 16px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>World Clock Dashboard</h1>
+    <p>Live time for India plus five selectable global time zones.</p>
+  </header>
+
+  <div class="content">
+
+    <!-- IMPROVED LOCAL BLOCK -->
+    <div class="local-time-block">
+      <div class="lt-title">Local Time — India</div>
+      <div id="localDate" class="lt-date"></div>
+      <div id="localTime" class="lt-time"></div>
+    </div>
+
+    <div class="world-title">
+      View current time across different countries. Select any timezone below.
+    </div>
+
+    <!-- 5 CLOCK CARDS -->
+    <div class="clock-grid">
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+      <div class="clock-card">
+        <div class="timezone-label"></div>
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="dropdown"><span>Select Time Zone</span>
+          <div class="drop-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    Developed using HTML, CSS, and JavaScript — No frameworks used.
+  </footer>
+
+  <script>
+    const timezones = Intl.supportedValuesOf("timeZone");
+
+    function updateLocalTime() {
+      const now = new Date();
+      document.getElementById("localTime").textContent = now.toLocaleTimeString();
+      document.getElementById("localDate").textContent = now.toLocaleDateString();
+    }
+
+    setInterval(updateLocalTime, 1000);
+    updateLocalTime();
+
+    const defaults = [
+      "Europe/London",
+      "America/New_York",
+      "Asia/Dubai",
+      "Asia/Tokyo",
+      "Australia/Sydney"
+    ];
+
+    const cards = document.querySelectorAll(".clock-card");
+
+    cards.forEach((card, index) => {
+      const dropdown = card.querySelector(".dropdown");
+      const label = card.querySelector(".timezone-label");
+      const list = card.querySelector(".drop-list");
+      const span = dropdown.querySelector("span");
+
+      timezones.forEach(tz => {
+        const item = document.createElement("div");
+        item.textContent = tz.replace(/_/g, " ");
+        item.onclick = () => {
+          span.textContent = item.textContent;
+          dropdown.dataset.tz = tz;
+          list.style.display = "none";
+          updateWorldTimes();
+        };
+        list.appendChild(item);
+      });
+
+      const tz = defaults[index];
+      dropdown.dataset.tz = tz;
+      span.textContent = tz.replace(/_/g, " ");
+      label.textContent = tz.replace(/_/g, " ");
+
+      dropdown.addEventListener("click", e => {
+        e.stopPropagation();
+
+        document.querySelectorAll(".drop-list").forEach(otherList => {
+          if (otherList !== list) otherList.style.display = "none";
+        });
+
+        list.style.display = list.style.display === "block" ? "none" : "block";
+      });
+    });
+
+    document.addEventListener("click", () => {
+      document.querySelectorAll(".drop-list").forEach(list => {
+        list.style.display = "none";
+      });
+    });
+
+    function updateWorldTimes() {
+      cards.forEach(card => {
+        const tz = card.querySelector(".dropdown").dataset.tz;
+        const label = card.querySelector(".timezone-label");
+        const dateEl = card.querySelector(".date");
+        const timeEl = card.querySelector(".time");
+
+        const now = new Date();
+
+        label.textContent = tz.replace(/_/g, " ");
+        dateEl.textContent = now.toLocaleDateString("en-US", { timeZone: tz });
+        timeEl.textContent = now.toLocaleTimeString("en-US", { timeZone: tz });
+      });
+    }
+
+    setInterval(updateWorldTimes, 1000);
+    updateWorldTimes();
+  </script>
+
+</body>
+
+</html>
