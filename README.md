@@ -47,5 +47,59 @@ This project displays:
 No frameworks. No libraries.  
 Just pure frontend code.
 
+---
+
+## 📂 Project Structure
+
+world-clock/
+│
+├── index.html # Main dashboard page
+└── README.md # Project documentation
+
+---
+
+## 🌐 Live Demo
+Once GitHub Pages is enabled, the project will be live at:
+
+https://akanshujamwal.github.io/world-clock/
+
+---
+
+## 📸 Screenshot (Optional)
+Add a screenshot here later if you want.
+
+---
+
+## 🤝 Contributing
+Pull requests are welcome.  
+For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## 📜 License
+This project is **Open Source** under the MIT License.
+
+---
+
+## 👨‍💻 Developer
+**Akanshu Jamwal**
+
+If you'd like, I can also create:
+✔ A beautiful banner for your README  
+✔ Enhanced UI screenshots  
+✔ Dark/Light theme toggle for the project  
+✔ Folder structure for future versions  
+
+Just tell me!
+
+
+
+
+
+
+
+
+
+
 
 
