@@ -10,8 +10,8 @@ This project demonstrates clean UI design, real-time updates, and timezone handl
 
 The dashboard displays:
 
-- 🇮🇳 **Live Indian Local Time**
-- 🌐 **Five Global Time Cards**
+- 🇮🇳 Live Indian Local Time
+- 🌐 Five Global Time Cards
 - ⏱ Real-time clock updates (every second)
 - 🌎 Custom timezone selector for each card
 - 📱 Fully responsive layout across all devices
