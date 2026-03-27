@@ -1,4 +1,4 @@
-# 🌍 World Clock Dashboard
+# World Clock Dashboard
 
 A modern, responsive **World Clock Dashboard** built with **pure HTML, CSS, and JavaScript** — no frameworks, no libraries.
 
@@ -6,7 +6,7 @@ This project demonstrates clean UI design, real-time updates, and timezone handl
 
 ---
 
-## ✨ Overview
+## Overview
 
 The dashboard displays:
 
@@ -20,7 +20,7 @@ Built entirely with vanilla frontend technologies.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 ### 🕒 Real-Time India Clock
 - Automatically detects and displays Indian local date & time  
