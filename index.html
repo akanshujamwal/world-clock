@@ -1,705 +1,916 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>World Clock Dashboard</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Inter", Arial, sans-serif;
-    }
-
-    body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      text-align: center;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    header h1 {
-      font-size: 26px;
-      letter-spacing: .5px;
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
-
-    header p {
-      opacity: 0.75;
-      font-size: 14px;
-    }
-
-    .content {
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
-      flex: 1;
-      width: 100%;
-    }
-
-    .block {
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, .2);
-      padding: 20px;
-      border-radius: 12px;
-      backdrop-filter: blur(14px);
-      margin-bottom: 24px;
-    }
-
-    .block-title {
-      text-align: center;
-      font-size: 18px;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .time {
-      font-size: 34px;
-      font-weight: bold;
-      margin-top: 6px;
-      text-align: center;
-    }
-
-    .date {
-      text-align: center;
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    .world-title {
-      font-size: 15px;
-      margin-bottom: 14px;
-      opacity: .85;
-      font-weight: 500;
-    }
-
-    .clock-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
-    }
-
-    @media (max-width: 1000px) {
-      .clock-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 700px) {
-      .clock-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 480px) {
-      .clock-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .clock-card {
-      background: rgba(255, 255, 255, .18);
-      border: 1px solid rgba(255, 255, 255, .25);
-      padding: 10px;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      backdrop-filter: blur(14px);
-    }
-
-    .timezone-label {
-      font-size: 15px;
-      text-align: center;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .dropdown {
-      position: relative;
-      width: 100%;
-      background: #fff;
-      color: #000;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      user-select: none;
-      font-size: 13px;
-      text-align: center;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-    }
-
-    .drop-list {
-      display: none;
-      position: absolute;
-      top: 105%;
-      left: 0;
-      width: 100%;
-      max-height: 140px;
-      overflow-y: auto;
-      background: #fff;
-      color: #000;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      z-index: 100;
-    }
-
-    .drop-list div {
-      padding: 6px 8px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .drop-list div:hover {
-      background: #eee;
-    }
-
-    footer {
-      text-align: center;
-      opacity: 0.75;
-      font-size: 13px;
-      padding: 16px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.18);
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(10px);
-    }
-  </style>
-</head>
-
-<body>
-
-  <header>
-    <h1>World Clock Dashboard</h1>
-    <p>Real-time accurate world time with timezone selector</p>
-  </header>
-
-  <div class="content">
-
-    <div class="block">
-      <div class="block-title">Local Time (India)</div>
-      <div id="localDate" class="date"></div>
-      <div id="localTime" class="time"></div>
-    </div>
-
-    <div class="world-title">
-      View live time across multiple countries. Select any time zone below.
-    </div>
-
-    <div class="clock-grid">
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <footer>
-    Developed using HTML, CSS, and JavaScript — No frameworks or libraries used.
-  </footer>
-
-  <script>
-    const timezones = Intl.supportedValuesOf("timeZone");
-
-    function updateLocalTime() {
-      const now = new Date();
-      document.getElementById("localTime").textContent = now.toLocaleTimeString();
-      document.getElementById("localDate").textContent = now.toLocaleDateString();
-    }
-
-    setInterval(updateLocalTime, 1000);
-    updateLocalTime();
-
-    const defaults = [
-      "Europe/London",
-      "America/New_York",
-      "Asia/Dubai",
-      "Asia/Tokyo",
-      "Australia/Sydney"
-    ];
-
-    const cards = document.querySelectorAll(".clock-card");
-
-    cards.forEach((card, index) => {
-      const dropdown = card.querySelector(".dropdown");
-      const label = card.querySelector(".timezone-label");
-      const list = card.querySelector(".drop-list");
-      const span = dropdown.querySelector("span");
-
-      timezones.forEach(tz => {
-        const item = document.createElement("div");
-        item.textContent = tz.replace(/_/g, " ");
-        item.onclick = () => {
-          span.textContent = item.textContent;
-          dropdown.dataset.tz = tz;
-          list.style.display = "none";
-          updateWorldTimes();
-        };
-        list.appendChild(item);
-      });
-
-      const tz = defaults[index];
-      dropdown.dataset.tz = tz;
-      span.textContent = tz.replace(/_/g, " ");
-      label.textContent = tz.replace(/_/g, " ");
-
-      dropdown.addEventListener("click", e => {
-        e.stopPropagation();
-
-        document.querySelectorAll(".drop-list").forEach(otherList => {
-          if (otherList !== list) otherList.style.display = "none";
-        });
-
-        list.style.display = list.style.display === "block" ? "none" : "block";
-      });
-    });
-
-    document.addEventListener("click", () => {
-      document.querySelectorAll(".drop-list").forEach(list => {
-        list.style.display = "none";
-      });
-    });
-
-    function updateWorldTimes() {
-      cards.forEach(card => {
-        const tz = card.querySelector(".dropdown").dataset.tz;
-        const label = card.querySelector(".timezone-label");
-        const dateEl = card.querySelector(".date");
-        const timeEl = card.querySelector(".time");
-
-        const now = new Date();
-
-        label.textContent = tz.replace(/_/g, " ");
-        dateEl.textContent = now.toLocaleDateString("en-US", { timeZone: tz });
-        timeEl.textContent = now.toLocaleTimeString("en-US", { timeZone: tz });
-      });
-    }
-
-    setInterval(updateWorldTimes, 1000);
-    updateWorldTimes();
-  </script>
-
-</body>
-
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>World Clock Dashboard</title>
-
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Inter", Arial, sans-serif;
+    :root {
+      --bg: #080d1a;
+      --surface: rgba(255,255,255,0.05);
+      --surface2: rgba(255,255,255,0.09);
+      --border: rgba(255,255,255,0.1);
+      --border2: rgba(255,255,255,0.2);
+      --text: #e2e5f0;
+      --muted: rgba(226,229,240,0.45);
+      --accent: #f0a500;
+      --accent-dim: rgba(240,165,0,0.15);
+      --teal: #00d4aa;
+      --blue: #6080ff;
+      --red: #ff5f57;
+      --day-border: #f0a500;
+      --night-border: #6080ff;
     }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 15% 0%, rgba(96,128,255,0.13) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 100%, rgba(240,165,0,0.09) 0%, transparent 55%);
+      color: var(--text);
       min-height: 100vh;
+      font-family: 'Syne', sans-serif;
       display: flex;
       flex-direction: column;
     }
 
+    /* ─── Header ─────────────────────────────── */
     header {
-      text-align: center;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,13,26,0.85);
+      backdrop-filter: blur(20px);
       position: sticky;
       top: 0;
-      z-index: 10;
-    }
-
-    header h1 {
-      font-size: 26px;
-      letter-spacing: .5px;
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
-
-    header p {
-      opacity: 0.75;
-      font-size: 14px;
-    }
-
-    .content {
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
-      flex: 1;
-      width: 100%;
-    }
-
-    /* Updated Local Time Block */
-    .local-time-block {
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, .22);
-      padding: 25px;
-      border-radius: 14px;
-      backdrop-filter: blur(16px);
-      margin-bottom: 30px;
-      min-height: 165px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-    }
-
-    .lt-title {
-      text-align: center;
-      font-size: 25px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: .3px;
-      opacity: 0.95;
-    }
-
-    .lt-time {
-      font-size: 47px;
-      font-weight: 700;
-      text-align: center;
-      margin-top: 4px;
-    }
-
-    .lt-date {
-      text-align: center;
-      font-size: 20px;
-      opacity: .85;
-    }
-
-    .world-title {
-      font-size: 15px;
-      margin-bottom: 14px;
-      opacity: .85;
-      font-weight: 500;
-    }
-
-    .clock-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      z-index: 100;
       gap: 14px;
+      flex-wrap: wrap;
     }
 
-    @media (max-width: 1000px) {
-      .clock-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+    .brand h1 {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+    }
+    .brand h1 span { color: var(--accent); }
+
+    .brand p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
     }
 
-    @media (max-width: 700px) {
-      .clock-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    .btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border2);
+      background: var(--surface2);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      letter-spacing: 0.5px;
+    }
+    .btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); }
+    .btn.active, .btn:focus-visible {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+      outline: none;
     }
 
-    @media (max-width: 480px) {
-      .clock-grid {
-        grid-template-columns: 1fr;
-      }
+    .btn-add {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+    }
+    .btn-add:hover { background: #ffd060; border-color: #ffd060; color: #000; transform: translateY(-1px); }
+
+    /* ─── Content ─────────────────────────────── */
+    .content {
+      max-width: 1380px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 40px;
+      flex: 1;
     }
 
-    .clock-card {
-      background: rgba(255, 255, 255, .18);
-      border: 1px solid rgba(255, 255, 255, .25);
-      padding: 16px;
-      border-radius: 10px;
+    /* ─── Local Hero ──────────────────────────── */
+    .local-hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .local-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 120% at 100% 50%, rgba(240,165,0,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .local-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
       display: flex;
-      flex-direction: column;
-      backdrop-filter: blur(14px);
+      align-items: center;
+      gap: 6px;
+    }
+    .local-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
-    .timezone-label {
+    #localTime {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 58px;
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    #localTime:hover { color: var(--accent); }
+    #localTime:hover::after { content: ' 📋'; font-size: 24px; }
+
+    #localDate {
       font-size: 15px;
-      text-align: center;
-      font-weight: 600;
+      color: var(--muted);
       margin-bottom: 8px;
     }
 
-    .date {
-      text-align: center;
-      font-size: 13px;
-      opacity: 0.85;
+    .local-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .time {
-      font-size: 28px;
-      font-weight: 700;
-      text-align: center;
-      margin: 6px 0;
+    .pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .pill.teal { color: var(--teal); border-color: rgba(0,212,170,0.3); }
+    .pill.amber { color: var(--accent); border-color: rgba(240,165,0,0.3); }
+
+    /* ─── Analog Clock ────────────────────────── */
+    .analog-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .analog-wrap svg {
+      width: 118px;
+      height: 118px;
+      filter: drop-shadow(0 0 12px rgba(240,165,0,0.12));
+    }
+    .analog-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px;
     }
 
-    .dropdown {
+    /* ─── Section header ──────────────────────── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+    .clock-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ─── Grid ────────────────────────────────── */
+    .clock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    /* ─── Clock Card ──────────────────────────── */
+    .clock-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
       position: relative;
-      width: 100%;
-      background: #fff;
-      color: #000;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      user-select: none;
-      font-size: 13px;
-      text-align: center;
-      margin-top: 10px;
-      border: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      overflow: visible;
     }
+    .clock-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+    }
+    .clock-card.is-day { border-left: 3px solid var(--day-border); }
+    .clock-card.is-night { border-left: 3px solid var(--night-border); }
 
-    .drop-list {
-      display: none;
+    .card-remove {
       position: absolute;
-      top: 105%;
-      left: 0;
-      width: 100%;
-      max-height: 140px;
-      overflow-y: auto;
-      background: #fff;
-      color: #000;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      z-index: 100;
+      top: 10px; right: 10px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.18s;
+      line-height: 1;
+    }
+    .clock-card:hover .card-remove { opacity: 1; }
+    .card-remove:hover { background: var(--red); border-color: var(--red); color: #fff; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding-right: 20px;
+    }
+    .card-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .card-tz { flex: 1; min-width: 0; }
+    .card-name {
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-region {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 1px;
     }
 
-    .drop-list div {
-      padding: 6px 8px;
+    .card-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1;
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+    .card-time:hover { color: var(--accent); }
+
+    .card-date {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    .card-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .card-pills .pill { font-size: 10px; }
+    .pill.ahead { color: #7fff7f; border-color: rgba(127,255,127,0.25); }
+    .pill.behind { color: #ff9090; border-color: rgba(255,144,144,0.25); }
+    .pill.same  { color: var(--muted); }
+
+    /* ─── Searchable Dropdown ─────────────────── */
+    .tz-selector { position: relative; }
+
+    .tz-input-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 10px;
+      cursor: text;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .tz-input-row:focus-within {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .tz-icon { font-size: 12px; opacity: 0.5; flex-shrink: 0; }
+
+    .tz-search {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      width: 100%;
+      min-width: 0;
+    }
+    .tz-search::placeholder { color: var(--muted); }
+
+    .tz-clear {
+      background: none;
+      border: none;
+      color: var(--muted);
       cursor: pointer;
       font-size: 13px;
+      flex-shrink: 0;
+      line-height: 1;
+      padding: 0;
+      display: none;
+    }
+    .tz-clear.visible { display: block; }
+    .tz-clear:hover { color: var(--text); }
+
+    .tz-dropdown {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0; right: 0;
+      background: #111827;
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      max-height: 190px;
+      overflow-y: auto;
+      z-index: 9000;
+      display: none;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.6);
+    }
+    .tz-dropdown.open { display: block; }
+
+    .tz-option {
+      padding: 8px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.1s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .tz-option:last-child { border-bottom: none; }
+    .tz-option:hover, .tz-option.hl {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .tz-option-offset {
+      font-size: 10px;
+      opacity: 0.5;
+      flex-shrink: 0;
     }
 
-    .drop-list div:hover {
-      background: #eee;
+    .tz-empty {
+      padding: 14px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
     }
 
+    /* scrollbar */
+    .tz-dropdown::-webkit-scrollbar { width: 4px; }
+    .tz-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .tz-dropdown::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+    /* ─── Toast ───────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(70px);
+      background: var(--accent);
+      color: #000;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 22px;
+      border-radius: 30px;
+      z-index: 99999;
+      pointer-events: none;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ─── Footer ──────────────────────────────── */
     footer {
       text-align: center;
-      opacity: 0.75;
-      font-size: 13px;
-      padding: 16px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.18);
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(10px);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 18px;
+      border-top: 1px solid var(--border);
+      background: rgba(8,13,26,0.6);
+    }
+
+    /* ─── Responsive ──────────────────────────── */
+    @media (max-width: 680px) {
+      header { padding: 12px 16px; }
+      .content { padding: 20px 14px 36px; }
+
+      .local-hero {
+        grid-template-columns: 1fr;
+        padding: 22px 20px;
+        text-align: center;
+        gap: 20px;
+      }
+      .local-badge { justify-content: center; }
+      .local-meta { justify-content: center; }
+      #localTime { font-size: 42px; }
+      .analog-wrap { display: none; }
+    }
+
+    @media (max-width: 400px) {
+      #localTime { font-size: 34px; }
+      .clock-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-
 <body>
 
-  <header>
-    <h1>World Clock Dashboard</h1>
-    <p>Live time for India plus five selectable global time zones.</p>
-  </header>
+<!-- ─── Header ─────────────────────────────────── -->
+<header>
+  <div class="brand">
+    <h1>World <span>Clock</span></h1>
+    <p>// real-time · global · accurate</p>
+  </div>
+  <div class="controls">
+    <button class="btn" id="btn24h" title="Toggle 12h/24h">12H</button>
+    <button class="btn" id="btnSeconds" title="Toggle seconds">:SS</button>
+    <button class="btn btn-add" id="btnAdd">＋ Add Clock</button>
+  </div>
+</header>
 
-  <div class="content">
+<!-- ─── Main ───────────────────────────────────── -->
+<div class="content">
 
-    <!-- IMPROVED LOCAL BLOCK -->
-    <div class="local-time-block">
-      <div class="lt-title">Local Time — India</div>
-      <div id="localDate" class="lt-date"></div>
-      <div id="localTime" class="lt-time"></div>
+  <!-- Local Hero -->
+  <div class="local-hero">
+    <div>
+      <div class="local-badge">📍 Your Local Time — India</div>
+      <div id="localTime" title="Click to copy">--:--:--</div>
+      <div id="localDate"></div>
+      <div class="local-meta" id="localMeta"></div>
     </div>
-
-    <div class="world-title">
-      View current time across different countries. Select any timezone below.
-    </div>
-
-    <!-- 5 CLOCK CARDS -->
-    <div class="clock-grid">
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
-      <div class="clock-card">
-        <div class="timezone-label"></div>
-        <div class="date"></div>
-        <div class="time"></div>
-        <div class="dropdown"><span>Select Time Zone</span>
-          <div class="drop-list"></div>
-        </div>
-      </div>
-
+    <div class="analog-wrap">
+      <svg id="analogSvg" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg"></svg>
+      <span class="analog-label">IST</span>
     </div>
   </div>
 
-  <footer>
-    Developed using HTML, CSS, and JavaScript — No frameworks used.
-  </footer>
+  <!-- World Clocks -->
+  <div class="section-header">
+    <div class="section-title">// world clocks</div>
+    <div class="clock-count" id="clockCount"></div>
+  </div>
+  <div class="clock-grid" id="clockGrid"></div>
 
-  <script>
-    const timezones = Intl.supportedValuesOf("timeZone");
+</div>
 
-    function updateLocalTime() {
-      const now = new Date();
-      document.getElementById("localTime").textContent = now.toLocaleTimeString();
-      document.getElementById("localDate").textContent = now.toLocaleDateString();
+<footer>Built with HTML · CSS · Vanilla JavaScript — No frameworks · No libraries</footer>
+<div class="toast" id="toast">⏰ Copied to clipboard!</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   CONFIGURATION
+═══════════════════════════════════════════════ */
+const IST_TZ   = 'Asia/Kolkata';
+const ALL_TZ   = Intl.supportedValuesOf('timeZone');
+
+let use24h     = false;
+let showSec    = true;
+let cardList   = []; // [{id, tz}]
+let nextId     = 1;
+
+const DEFAULTS = [
+  'Europe/London',
+  'America/New_York',
+  'Asia/Dubai',
+  'Asia/Tokyo',
+  'Australia/Sydney',
+];
+
+/* ═══════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════ */
+function getUTCOffset(tz) {
+  const now = new Date();
+  const utcMs  = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' })).getTime();
+  const tzMs   = new Date(now.toLocaleString('en-US', { timeZone: tz  })).getTime();
+  const diffMin = Math.round((tzMs - utcMs) / 60000);
+  const sign = diffMin >= 0 ? '+' : '-';
+  const abs  = Math.abs(diffMin);
+  return `UTC${sign}${String(Math.floor(abs/60)).padStart(2,'0')}:${String(abs%60).padStart(2,'0')}`;
+}
+
+function getDiffVsIST(tz) {
+  if (tz === IST_TZ) return { label: 'Local', cls: 'same' };
+  const now   = new Date();
+  const istMs = new Date(now.toLocaleString('en-US', { timeZone: IST_TZ })).getTime();
+  const tzMs  = new Date(now.toLocaleString('en-US', { timeZone: tz    })).getTime();
+  const diffMin = Math.round((tzMs - istMs) / 60000);
+  if (diffMin === 0) return { label: '= IST', cls: 'same' };
+  const sign = diffMin > 0 ? '+' : '-';
+  const abs  = Math.abs(diffMin);
+  const h = Math.floor(abs/60), m = abs%60;
+  return {
+    label: (m ? `${sign}${h}h ${m}m` : `${sign}${h}h`) + ' IST',
+    cls: diffMin > 0 ? 'ahead' : 'behind',
+  };
+}
+
+function isDaytime(tz) {
+  const h = parseInt(new Date().toLocaleString('en-US', {
+    timeZone: tz, hour: 'numeric', hour12: false,
+  }), 10);
+  return h >= 6 && h < 20;
+}
+
+function cityOf(tz)   { return tz.split('/').pop().replace(/_/g, ' '); }
+function regionOf(tz) { return tz.split('/').slice(0, -1).join('/').replace(/_/g, ' ') || tz; }
+
+function fmtTime(now, tz) {
+  return now.toLocaleTimeString('en-US', {
+    timeZone: tz,
+    hour: '2-digit',
+    minute: '2-digit',
+    ...(showSec ? { second: '2-digit' } : {}),
+    hour12: !use24h,
+  });
+}
+
+function fmtDate(now, tz) {
+  return now.toLocaleDateString('en-US', {
+    timeZone: tz,
+    weekday: 'short', day: 'numeric', month: 'short', year: 'numeric',
+  });
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(showToast).catch(() => showToast());
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  if (msg) el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+/* ═══════════════════════════════════════════════
+   ANALOG CLOCK
+═══════════════════════════════════════════════ */
+function buildAnalog() {
+  const svg = document.getElementById('analogSvg');
+  svg.innerHTML = '';
+
+  // Outer ring
+  const makeEl = (tag, attrs) => {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const [k,v] of Object.entries(attrs)) el.setAttribute(k, v);
+    return el;
+  };
+
+  svg.appendChild(makeEl('circle', { cx:55, cy:55, r:52,
+    fill:'none', stroke:'rgba(255,255,255,0.08)', 'stroke-width':1.5 }));
+  svg.appendChild(makeEl('circle', { cx:55, cy:55, r:48,
+    fill:'rgba(255,255,255,0.03)', stroke:'rgba(255,255,255,0.06)', 'stroke-width':1 }));
+
+  // Ticks
+  for (let i = 0; i < 60; i++) {
+    const rad = (i * 6 - 90) * Math.PI / 180;
+    const isHour = i % 5 === 0;
+    const r1 = isHour ? 42 : 45, r2 = 48;
+    svg.appendChild(makeEl('line', {
+      x1: 55 + r1 * Math.cos(rad), y1: 55 + r1 * Math.sin(rad),
+      x2: 55 + r2 * Math.cos(rad), y2: 55 + r2 * Math.sin(rad),
+      stroke: isHour ? (i === 0 ? '#f0a500' : 'rgba(255,255,255,0.35)') : 'rgba(255,255,255,0.1)',
+      'stroke-width': isHour ? 1.5 : 1,
+      'stroke-linecap': 'round',
+    }));
+  }
+
+  // Hands (stored as globals so we can rotate)
+  window._hourHand = makeEl('line', { x1:55, y1:55, x2:55, y2:55,
+    stroke:'#f0a500', 'stroke-width':3, 'stroke-linecap':'round' });
+  window._minHand  = makeEl('line', { x1:55, y1:55, x2:55, y2:55,
+    stroke:'#e2e5f0', 'stroke-width':2, 'stroke-linecap':'round' });
+  window._secHand  = makeEl('line', { x1:55, y1:55, x2:55, y2:55,
+    stroke:'#00d4aa', 'stroke-width':1, 'stroke-linecap':'round' });
+
+  svg.appendChild(window._hourHand);
+  svg.appendChild(window._minHand);
+  svg.appendChild(window._secHand);
+
+  // Center
+  svg.appendChild(makeEl('circle', { cx:55, cy:55, r:4.5, fill:'#f0a500' }));
+  svg.appendChild(makeEl('circle', { cx:55, cy:55, r:2,   fill:'#080d1a' }));
+}
+
+function setHand(el, deg, length) {
+  const rad = (deg - 90) * Math.PI / 180;
+  el.setAttribute('x2', (55 + length * Math.cos(rad)).toFixed(2));
+  el.setAttribute('y2', (55 + length * Math.sin(rad)).toFixed(2));
+}
+
+function tickAnalog(now) {
+  const local = new Date(now.toLocaleString('en-US', { timeZone: IST_TZ }));
+  const h = local.getHours() % 12, m = local.getMinutes(), s = local.getSeconds();
+  setHand(window._hourHand, h*30 + m*0.5 + s*(0.5/60), 28);
+  setHand(window._minHand,  m*6  + s*0.1, 38);
+  setHand(window._secHand,  s*6,           41);
+}
+
+/* ═══════════════════════════════════════════════
+   LOCAL TIME
+═══════════════════════════════════════════════ */
+function renderLocalTime(now) {
+  document.getElementById('localTime').textContent = fmtTime(now, IST_TZ);
+  document.getElementById('localDate').textContent = fmtDate(now, IST_TZ);
+
+  const meta = document.getElementById('localMeta');
+  meta.innerHTML = `
+    <span class="pill teal">${getUTCOffset(IST_TZ)}</span>
+    <span class="pill amber">${isDaytime(IST_TZ) ? '☀️ Day' : '🌙 Night'}</span>
+    <span class="pill">${Intl.DateTimeFormat().resolvedOptions().timeZone}</span>
+  `;
+
+  tickAnalog(now);
+}
+
+document.getElementById('localTime').addEventListener('click', () => {
+  const now = new Date();
+  copyText(`India (IST): ${fmtTime(now, IST_TZ)} — ${fmtDate(now, IST_TZ)}`);
+});
+
+/* ═══════════════════════════════════════════════
+   CARD RENDERING
+═══════════════════════════════════════════════ */
+function buildCard(id, tz) {
+  const card = document.createElement('div');
+  card.className = 'clock-card';
+  card.dataset.id = id;
+  card.dataset.tz = tz;
+
+  const day  = isDaytime(tz);
+  const diff = getDiffVsIST(tz);
+  const off  = getUTCOffset(tz);
+
+  card.classList.add(day ? 'is-day' : 'is-night');
+
+  card.innerHTML = `
+    <button class="card-remove" aria-label="Remove">✕</button>
+    <div class="card-top">
+      <div class="card-icon">${day ? '☀️' : '🌙'}</div>
+      <div class="card-tz">
+        <div class="card-name">${cityOf(tz)}</div>
+        <div class="card-region">${regionOf(tz)}</div>
+      </div>
+    </div>
+    <div class="card-time" title="Click to copy">--:--</div>
+    <div class="card-date"></div>
+    <div class="card-pills">
+      <span class="pill teal">${off}</span>
+      <span class="pill ${diff.cls}">${diff.label}</span>
+    </div>
+    <div class="tz-selector">
+      <div class="tz-input-row">
+        <span class="tz-icon">🔍</span>
+        <input class="tz-search" type="text" placeholder="Change timezone…" autocomplete="off" spellcheck="false">
+        <button class="tz-clear" aria-label="Clear">✕</button>
+      </div>
+      <div class="tz-dropdown"></div>
+    </div>
+  `;
+
+  // Remove
+  card.querySelector('.card-remove').addEventListener('click', () => {
+    cardList = cardList.filter(c => c.id !== id);
+    card.remove();
+    updateCount();
+  });
+
+  // Copy time
+  card.querySelector('.card-time').addEventListener('click', () => {
+    const now = new Date();
+    copyText(`${cityOf(tz)} (${off}): ${fmtTime(now, tz)} — ${fmtDate(now, tz)}`);
+  });
+
+  // Searchable dropdown
+  setupDropdown(card, id, tz);
+  return card;
+}
+
+function setupDropdown(card, id, initTz) {
+  const input    = card.querySelector('.tz-search');
+  const clearBtn = card.querySelector('.tz-clear');
+  const dropdown = card.querySelector('.tz-dropdown');
+  let filtered   = [];
+  let hlIdx      = -1;
+
+  function renderOpts(list) {
+    filtered = list;
+    hlIdx    = -1;
+    dropdown.innerHTML = '';
+    if (!list.length) {
+      dropdown.innerHTML = '<div class="tz-empty">No timezones found</div>';
+      return;
     }
-
-    setInterval(updateLocalTime, 1000);
-    updateLocalTime();
-
-    const defaults = [
-      "Europe/London",
-      "America/New_York",
-      "Asia/Dubai",
-      "Asia/Tokyo",
-      "Australia/Sydney"
-    ];
-
-    const cards = document.querySelectorAll(".clock-card");
-
-    cards.forEach((card, index) => {
-      const dropdown = card.querySelector(".dropdown");
-      const label = card.querySelector(".timezone-label");
-      const list = card.querySelector(".drop-list");
-      const span = dropdown.querySelector("span");
-
-      timezones.forEach(tz => {
-        const item = document.createElement("div");
-        item.textContent = tz.replace(/_/g, " ");
-        item.onclick = () => {
-          span.textContent = item.textContent;
-          dropdown.dataset.tz = tz;
-          list.style.display = "none";
-          updateWorldTimes();
-        };
-        list.appendChild(item);
-      });
-
-      const tz = defaults[index];
-      dropdown.dataset.tz = tz;
-      span.textContent = tz.replace(/_/g, " ");
-      label.textContent = tz.replace(/_/g, " ");
-
-      dropdown.addEventListener("click", e => {
-        e.stopPropagation();
-
-        document.querySelectorAll(".drop-list").forEach(otherList => {
-          if (otherList !== list) otherList.style.display = "none";
-        });
-
-        list.style.display = list.style.display === "block" ? "none" : "block";
-      });
+    list.slice(0, 60).forEach((tz, i) => {
+      const opt = document.createElement('div');
+      opt.className = 'tz-option';
+      opt.innerHTML = `
+        <span>${tz.replace(/_/g,' ')}</span>
+        <span class="tz-option-offset">${getUTCOffset(tz)}</span>
+      `;
+      opt.addEventListener('mousedown', e => { e.preventDefault(); selectTz(tz); });
+      dropdown.appendChild(opt);
     });
+  }
 
-    document.addEventListener("click", () => {
-      document.querySelectorAll(".drop-list").forEach(list => {
-        list.style.display = "none";
-      });
-    });
+  function selectTz(tz) {
+    cardList = cardList.map(c => c.id === id ? { ...c, tz } : c);
+    closeDropdown();
+    // Replace card in grid
+    const grid = document.getElementById('clockGrid');
+    const old  = grid.querySelector(`[data-id="${id}"]`);
+    const neu  = buildCard(id, tz);
+    grid.replaceChild(neu, old);
+    const now = new Date();
+    updateCard(neu, now);
+  }
 
-    function updateWorldTimes() {
-      cards.forEach(card => {
-        const tz = card.querySelector(".dropdown").dataset.tz;
-        const label = card.querySelector(".timezone-label");
-        const dateEl = card.querySelector(".date");
-        const timeEl = card.querySelector(".time");
+  function openDropdown() {
+    renderOpts(ALL_TZ);
+    dropdown.classList.add('open');
+  }
 
-        const now = new Date();
+  function closeDropdown() {
+    dropdown.classList.remove('open');
+    input.value = '';
+    clearBtn.classList.remove('visible');
+    hlIdx = -1;
+  }
 
-        label.textContent = tz.replace(/_/g, " ");
-        dateEl.textContent = now.toLocaleDateString("en-US", { timeZone: tz });
-        timeEl.textContent = now.toLocaleTimeString("en-US", { timeZone: tz });
-      });
-    }
+  input.addEventListener('focus', () => openDropdown());
 
-    setInterval(updateWorldTimes, 1000);
-    updateWorldTimes();
-  </script>
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    clearBtn.classList.toggle('visible', q.length > 0);
+    renderOpts(q ? ALL_TZ.filter(tz => tz.toLowerCase().replace(/_/g,' ').includes(q)) : ALL_TZ);
+    dropdown.classList.add('open');
+  });
 
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.classList.remove('visible');
+    renderOpts(ALL_TZ);
+    input.focus();
+  });
+
+  input.addEventListener('keydown', e => {
+    const opts = dropdown.querySelectorAll('.tz-option');
+    if      (e.key === 'ArrowDown')  { e.preventDefault(); hlIdx = Math.min(hlIdx+1, opts.length-1); }
+    else if (e.key === 'ArrowUp')    { e.preventDefault(); hlIdx = Math.max(hlIdx-1, 0); }
+    else if (e.key === 'Enter')      { if (hlIdx >= 0 && filtered[hlIdx]) selectTz(filtered[hlIdx]); return; }
+    else if (e.key === 'Escape')     { closeDropdown(); input.blur(); return; }
+    opts.forEach((o,i) => o.classList.toggle('hl', i === hlIdx));
+    if (hlIdx >= 0 && opts[hlIdx]) opts[hlIdx].scrollIntoView({ block: 'nearest' });
+  });
+
+  // Close on outside click
+  document.addEventListener('click', e => {
+    if (!card.querySelector('.tz-selector').contains(e.target)) closeDropdown();
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   TICK
+═══════════════════════════════════════════════ */
+function updateCard(card, now) {
+  const tz     = card.dataset.tz;
+  const timeEl = card.querySelector('.card-time');
+  const dateEl = card.querySelector('.card-date');
+  if (timeEl) timeEl.textContent = fmtTime(now, tz);
+  if (dateEl) dateEl.textContent = fmtDate(now, tz);
+}
+
+function tick() {
+  const now = new Date();
+  renderLocalTime(now);
+  document.querySelectorAll('.clock-card').forEach(c => updateCard(c, now));
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+function updateCount() {
+  const n = document.querySelectorAll('.clock-card').length;
+  document.getElementById('clockCount').textContent = `${n} clock${n !== 1 ? 's' : ''}`;
+}
+
+function initCards() {
+  const grid = document.getElementById('clockGrid');
+  DEFAULTS.forEach(tz => {
+    const id   = nextId++;
+    cardList.push({ id, tz });
+    grid.appendChild(buildCard(id, tz));
+  });
+  updateCount();
+}
+
+// Add clock
+document.getElementById('btnAdd').addEventListener('click', () => {
+  // Pick a random tz not currently in list
+  const used = new Set(cardList.map(c => c.tz));
+  const available = ALL_TZ.filter(t => !used.has(t));
+  const tz = available[Math.floor(Math.random() * available.length)] || ALL_TZ[0];
+  const id = nextId++;
+  cardList.push({ id, tz });
+  const grid = document.getElementById('clockGrid');
+  const card = buildCard(id, tz);
+  grid.appendChild(card);
+  updateCard(card, new Date());
+  updateCount();
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+// 12/24h toggle
+document.getElementById('btn24h').addEventListener('click', e => {
+  use24h = !use24h;
+  e.currentTarget.textContent = use24h ? '24H' : '12H';
+  e.currentTarget.classList.toggle('active', use24h);
+  tick();
+});
+
+// Seconds toggle
+document.getElementById('btnSeconds').addEventListener('click', e => {
+  showSec = !showSec;
+  e.currentTarget.classList.toggle('active', !showSec);
+  e.currentTarget.title = showSec ? 'Hide seconds' : 'Show seconds';
+  tick();
+});
+
+// Boot
+buildAnalog();
+initCards();
+tick();
+setInterval(tick, 1000);
+</script>
 </body>
-
 </html>
