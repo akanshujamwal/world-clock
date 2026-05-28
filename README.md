@@ -1,4 +1,4 @@
-# 🌍 World Clock Dashboard
+# World Clock Dashboard
 
 A modern, feature-rich **World Clock Dashboard** built with **pure HTML, CSS, and JavaScript** — zero frameworks, zero libraries.
 
@@ -6,17 +6,12 @@ Designed for performance, usability, and clean frontend engineering.
 
 ---
 
-## 🔗 Live Demo
+## Live Demo
 
 👉 [akanshujamwal.github.io/world-clock](https://akanshujamwal.github.io/world-clock/)
 
 ---
 
-## 📸 Preview
-
-_Add screenshots here for better GitHub presentation._
-
----
 
 ## Overview
 
@@ -36,7 +31,7 @@ The dashboard displays:
 
 ## Key Features
 
-### 🕒 Local Time Hero (India)
+### Local Time Hero (India)
 
 - Live date & time in IST, updating every second
 - Smooth **SVG analog clock** with hour, minute, and second hands
@@ -45,7 +40,7 @@ The dashboard displays:
 
 ---
 
-### 🌍 Global Time Cards (Fully Dynamic)
+### Global Time Cards (Fully Dynamic)
 
 Default timezones:
 
@@ -74,7 +69,7 @@ Each card shows:
 
 ---
 
-### 🔍 Searchable Timezone Selector
+### Searchable Timezone Selector
 
 - Live search across 400+ IANA timezones as you type
 - UTC offset displayed alongside each option in the list
@@ -84,7 +79,7 @@ Each card shows:
 
 ---
 
-### 🎛 Global Controls
+### Global Controls
 
 | Control | Function |
 |---------|----------|
@@ -94,7 +89,7 @@ Each card shows:
 
 ---
 
-### 🎨 Design System
+### Design System
 
 - **Dark theme** with subtle blue-indigo radial gradients
 - **Monospace font** (JetBrains Mono) for all time values — clean and legible
@@ -106,7 +101,7 @@ Each card shows:
 
 ---
 
-### ⚡ Performance
+### Performance
 
 - Native **Intl.DateTimeFormat** API — no timezone library needed
 - DOM updates are scoped to each card — minimal reflows
@@ -115,7 +110,7 @@ Each card shows:
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Technology | Usage |
 |-----------|-------|
@@ -131,7 +126,7 @@ Each card shows:
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 world-clock/
@@ -144,7 +139,7 @@ Single-file architecture — easy to deploy anywhere, including GitHub Pages.
 
 ---
 
-## 🎯 Concepts Demonstrated
+## Concepts Demonstrated
 
 - JavaScript `Date` and `Intl` APIs (timezone, locale formatting)
 - Live DOM manipulation and real-time `setInterval` loops
@@ -156,7 +151,7 @@ Single-file architecture — easy to deploy anywhere, including GitHub Pages.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 No build step required.
 
@@ -170,7 +165,7 @@ Or deploy directly to **GitHub Pages**, **Netlify**, or **Vercel** — just push
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome!
 
@@ -183,20 +178,20 @@ For major changes, please open an issue first to discuss the approach.
 
 ---
 
-## 📜 License
+## License
 
 Released under the **MIT License** — free to use, modify, and distribute.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Akanshu Jamwal**
 Frontend Developer · Flutter · JavaScript · UI Engineering
 
 ---
 
-## 🔮 Potential Enhancements
+## Potential Enhancements
 
 - 💾 Save card preferences in `localStorage`
 - ⭐ Favourite / pin cities
